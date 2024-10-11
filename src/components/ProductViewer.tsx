@@ -3,7 +3,7 @@ import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
 
 const ProductViewer = () => {
     return (
-        <div className="bg-gray-200 rounded-lg p-8 shadow-md w-full h-[700px] max-w-4xl mx-auto">
+        <div className="hidden lg:block bg-gray-200 rounded-lg p-8 shadow-md w-full h-[700px] max-w-4xl mx-auto">
             <div className="flex gap-16">
                 <div className="flex flex-col">
                     <div className="flex justify-between items-center">
