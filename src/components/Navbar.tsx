@@ -3,13 +3,13 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 const Navbar = () => {
     return (
-        <nav className="container mx-auto py-4 flex justify-between items-center">
+        <nav className="container mx-auto py-4 px-4 lg:px-0 flex justify-between items-center">
             <div className="">
                 <p className="text-3xl font-bold">Logo</p>
             </div>
 
             <div className="relative">
-                <input type="text" className="w-80 border rounded-md py-2 px-4 focus:outline-none" placeholder="Search..." />
+                <input type="text" className="w-48 lg:w-80 border rounded-md py-2 px-4 focus:outline-none" placeholder="Search..." />
                 <MagnifyingGlassIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5" />
             </div>
 

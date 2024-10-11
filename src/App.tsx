@@ -4,9 +4,9 @@ import ProductViewer from "./components/ProductViewer";
 
 function App() {
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-white">
             <Navbar />
-            <main className="container mx-auto flex flex-row py-20">
+            <main className="container mx-auto flex flex-row py-20 gap-16">
                 <ProductList />
                 <ProductViewer />
             </main>
