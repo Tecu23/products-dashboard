@@ -18,7 +18,7 @@ function CartDropdown({ products }: Props) {
                             <li key={product.id} className="flex justify-between items-center mb-2">
                                 <div className="flex items-center">
                                     <div className="w-10 h-10 bg-gray-200 rounded-full mr-3 flex-shrink-0 flex-grow-0">
-                                        <img src={product.thumbnail} className="object-fill" />
+                                        <img src={product.thumbnail} className="object-fill" alt={`cart-thumbnail-${product.id}`} />
                                     </div>
                                     <p className="text-sm font-bold">{product.title}</p>
                                 </div>
@@ -38,7 +38,7 @@ function CartDropdown({ products }: Props) {
             </div>
             {products.length > 0 && (
                 <div className="border-t border-gray-200 p-4">
-                    <button className="w-full px-4 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600">Go to Checkout</button>
+                    <button className="w-full px-4 py-2 bg-cyan-700 text-white rounded-lg shadow hover:bg-cyan-800">Go to Checkout</button>
                 </div>
             )}
         </div>
