@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+
+import gsap from "gsap";
 
 import { ShoppingCartIcon, StarIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+
 import CartDropdown from "./shared/CartDropdown";
 import FavoriteDropdown from "./shared/FavoriteDropdown";
 
@@ -14,6 +17,45 @@ const Navbar = () => {
 
     const { products: favoriteProducts } = useSelector((state: RootState) => state.favoriteProducts);
     const { products: cartProducts } = useSelector((state: RootState) => state.cartProducts);
+
+    const cartDropdownRef = useRef<HTMLDivElement | null>(null);
+    const favoriteDropdownRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (cartDropdownRef.current && openCartDropdown) {
+            gsap.fromTo(
+                cartDropdownRef.current,
+                {
+                    y: -20,
+                    opacity: 0,
+                },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: "power3.out",
+                },
+            );
+        }
+    }, [openCartDropdown]);
+
+    useEffect(() => {
+        if (favoriteDropdownRef.current && openFavoriteDropdown) {
+            gsap.fromTo(
+                favoriteDropdownRef.current,
+                {
+                    y: -20,
+                    opacity: 0,
+                },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: "power3.out",
+                },
+            );
+        }
+    }, [openFavoriteDropdown]);
 
     return (
         <nav className="container mx-auto py-4 px-4 lg:px-0 flex justify-between items-center">
@@ -28,22 +70,42 @@ const Navbar = () => {
 
             <div className="flex gap-4">
                 <div className="relative">
-                    <button onClick={() => setOpenCartDropdown(!openCartDropdown)} className="h-6 w-6">
+                    <button
+                        onClick={() => {
+                            setOpenFavoriteDropdown(false);
+                            setOpenCartDropdown(!openCartDropdown);
+                        }}
+                        className="h-6 w-6"
+                    >
                         <ShoppingCartIcon className="h-6 w-6" />
                     </button>
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 flex justify-center items-center rounded-full text-xs font-semibold text-white">
                         {cartProducts.length}
                     </div>
-                    {openCartDropdown && <CartDropdown products={cartProducts} />}
+                    {openCartDropdown && (
+                        <div ref={cartDropdownRef} className="absolute right-0 mt-2 w-64 z-20">
+                            <CartDropdown products={cartProducts} />{" "}
+                        </div>
+                    )}
                 </div>
                 <div className="relative">
-                    <button onClick={() => setOpenFavoriteDropdown(!openFavoriteDropdown)} className="h-6 w-6">
+                    <button
+                        onClick={() => {
+                            setOpenCartDropdown(false);
+                            setOpenFavoriteDropdown(!openFavoriteDropdown);
+                        }}
+                        className="h-6 w-6"
+                    >
                         <StarIcon className="h-6 w-6" />
                     </button>
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 flex justify-center items-center rounded-full text-xs font-semibold text-white">
                         {favoriteProducts.length}
                     </div>
-                    {openFavoriteDropdown && <FavoriteDropdown products={favoriteProducts} />}
+                    {openFavoriteDropdown && (
+                        <div ref={favoriteDropdownRef} className="absolute right-0 mt-2 w-64 z-20">
+                            <FavoriteDropdown products={favoriteProducts} />{" "}
+                        </div>
+                    )}
                 </div>
             </div>
         </nav>

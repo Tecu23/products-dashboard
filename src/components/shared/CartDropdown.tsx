@@ -8,7 +8,7 @@ type Props = { products: CartProduct[] };
 function CartDropdown({ products }: Props) {
     const dispatch = useDispatch<AppDispatch>();
     return (
-        <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg">
+        <div className="w-full h-full bg-white border border-gray-200 rounded-lg shadow-lg">
             <div className="p-4">
                 {products.length === 0 ? (
                     <p className="text-gray-500 text-sm">Your cart is empty</p>

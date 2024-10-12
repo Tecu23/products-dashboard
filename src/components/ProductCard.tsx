@@ -1,8 +1,13 @@
-import { StarIcon as OutlineStarIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
+import { useRef } from "react";
+
+import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
+
+import gsap from "gsap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { RootState } from "../redux/store";
+import { AppDispatch, RootState } from "../redux/store";
+
+import { addToCart } from "../redux/slices/cartSlice";
 import { addToFavorite } from "../redux/slices/favoriteSlice";
 import { setSelectedProduct } from "../redux/slices/productsSlice";
 
@@ -10,7 +15,6 @@ import Rating from "./shared/Rating";
 
 import { Product } from "../utils/types";
 import { StarIcon } from "@heroicons/react/24/solid";
-import { addToCart } from "../redux/slices/cartSlice";
 
 const ProductCard = ({ product }: { product: Product }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +24,48 @@ const ProductCard = ({ product }: { product: Product }) => {
 
     const isFavorite = favoriteProducts.filter((p) => p.id === product.id)[0] != undefined;
     const isInCart = cartProducts.filter((p) => p.id === product.id)[0] != undefined;
+
+    const addToCartButtonRef = useRef<HTMLButtonElement | null>(null);
+    const addToFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    const handleAddToCart = () => {
+        if (addToCartButtonRef.current) {
+            gsap.to(addToCartButtonRef.current, {
+                scale: 1.5,
+                duration: 0.5,
+                yoyo: true,
+                repeat: 1,
+                ease: "power1.inOut",
+                onComplete: () => {
+                    gsap.to(addToFavoriteButtonRef.current, {
+                        scale: 1,
+                        duration: 0.3,
+                    });
+                    dispatch(addToCart(product));
+                },
+            });
+        }
+    };
+
+    const handleAddToFavorite = () => {
+        if (addToFavoriteButtonRef.current) {
+            gsap.to(addToFavoriteButtonRef.current, {
+                scale: 1.5,
+                rotation: 360,
+                duration: 0.5,
+                ease: "elastic.out(1, 0.5)",
+                onComplete: () => {
+                    gsap.to(addToFavoriteButtonRef.current, {
+                        scale: 1,
+                        rotation: 0,
+                        duration: 0.3,
+                    });
+                    dispatch(addToFavorite(product));
+                },
+            });
+        }
+    };
+
     return (
         <div
             role="button"
@@ -51,13 +97,14 @@ const ProductCard = ({ product }: { product: Product }) => {
                     {/* Add to Cart Button and Favorite Button */}
                     <div className="flex items-center gap-2">
                         <button
+                            ref={addToCartButtonRef}
                             disabled={isInCart}
-                            onClick={() => dispatch(addToCart(product))}
+                            onClick={handleAddToCart}
                             className="h-8 p-2 flex justify-center items-center rounded-lg transition duration-300 bg-cyan-600 text-white hover:bg-cyan-700 text-xs lg:text-sm font-semibold"
                         >
                             {<p className="inline-block">{isInCart ? "In Cart" : "Add to Cart"}</p>}
                         </button>
-                        <button disabled={isFavorite} onClick={() => dispatch(addToFavorite(product))} className="">
+                        <button ref={addToFavoriteButtonRef} disabled={isFavorite} onClick={handleAddToFavorite} className="">
                             {!isFavorite && <OutlineStarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-gray-500 hover:text-yellow-500" />}
                             {isFavorite && <StarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-yellow-500" />}
                         </button>

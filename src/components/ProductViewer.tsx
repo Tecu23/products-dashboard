@@ -1,16 +1,21 @@
+import { useRef } from "react";
+
 import { formatDistance } from "date-fns";
 
+import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
+
+import gsap from "gsap";
 
 import Rating from "./shared/Rating";
 
-import { Product } from "../utils/types";
-import { RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { addToFavorite } from "../redux/slices/favoriteSlice";
+import { RootState, AppDispatch } from "../redux/store";
+
 import { addToCart } from "../redux/slices/cartSlice";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { addToFavorite } from "../redux/slices/favoriteSlice";
+
+import { Product } from "../utils/types";
 
 const ProductViewer = ({ product }: { product: Product }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -21,8 +26,49 @@ const ProductViewer = ({ product }: { product: Product }) => {
     const isFavorite = favoriteProducts.filter((p) => p.id === product.id)[0] != undefined;
     const isInCart = cartProducts.filter((p) => p.id === product.id)[0] != undefined;
 
+    const addToCartButtonRef = useRef<HTMLButtonElement | null>(null);
+    const addToFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    const handleAddToCart = () => {
+        if (addToCartButtonRef.current) {
+            gsap.to(addToCartButtonRef.current, {
+                scale: 1.5,
+                duration: 0.5,
+                yoyo: true,
+                repeat: 1,
+                ease: "power1.inOut",
+                onComplete: () => {
+                    gsap.to(addToFavoriteButtonRef.current, {
+                        scale: 1,
+                        duration: 0.3,
+                    });
+                    dispatch(addToCart(product));
+                },
+            });
+        }
+    };
+
+    const handleAddToFavorite = () => {
+        if (addToFavoriteButtonRef.current) {
+            gsap.to(addToFavoriteButtonRef.current, {
+                scale: 1.5,
+                rotation: 360,
+                duration: 0.5,
+                ease: "elastic.out(1, 0.5)",
+                onComplete: () => {
+                    gsap.to(addToFavoriteButtonRef.current, {
+                        scale: 1,
+                        rotation: 0,
+                        duration: 0.3,
+                    });
+                    dispatch(addToFavorite(product));
+                },
+            });
+        }
+    };
+
     return (
-        <div className="hidden lg:block bg-gray-200 rounded-lg p-8 shadow-md h-[800px] w-[1200px] mx-auto">
+        <div className="hidden lg:block bg-gray-200 rounded-lg p-8 shadow-md w-full h-full">
             <div className="flex gap-10 h-full">
                 <div className="flex flex-col gap-2 h-full w-3/5">
                     <div className="flex justify-between items-center">
@@ -81,13 +127,14 @@ const ProductViewer = ({ product }: { product: Product }) => {
                     </div>
                     <div className="flex items-center space-x-4">
                         <button
+                            ref={addToCartButtonRef}
                             disabled={isInCart}
-                            onClick={() => dispatch(addToCart(product))}
+                            onClick={handleAddToCart}
                             className="py-2 px-4 rounded-md transition duration-300 bg-cyan-600 text-white hover:bg-cyan-700"
                         >
                             {isInCart ? "In Cart" : "Add to Cart"}
                         </button>
-                        <button disabled={isFavorite} className="" onClick={() => dispatch(addToFavorite(product))}>
+                        <button ref={addToFavoriteButtonRef} disabled={isFavorite} className="" onClick={handleAddToFavorite}>
                             {!isFavorite && <OutlineStarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-gray-500 hover:text-yellow-500" />}
                             {isFavorite && <StarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-yellow-500" />}
                         </button>
