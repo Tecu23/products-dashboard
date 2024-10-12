@@ -68,7 +68,7 @@ const ProductViewer = ({ product }: { product: Product }) => {
     };
 
     return (
-        <div className="hidden lg:block bg-gray-200 rounded-lg p-8 shadow-md w-full h-full">
+        <div className="bg-gray-200 rounded-lg p-8 shadow-md w-full h-full">
             <div className="flex gap-10 h-full">
                 <div className="flex flex-col gap-2 h-full w-3/5">
                     <div className="flex justify-between items-center">

@@ -80,7 +80,7 @@ const Dashboard = () => {
             <ProductList targetRef={observerTarget} products={products} loading={loading} />
 
             {selectedProduct != null && (
-                <div ref={productViewerRef} className="w-[1200px] h-full">
+                <div ref={productViewerRef} className="w-[1200px] h-full hidden lg:block ">
                     <ProductViewer product={selectedProduct} />{" "}
                 </div>
             )}
