@@ -71,7 +71,7 @@ const Navbar = () => {
                     id="product-search"
                     type="text"
                     aria-label="Search products"
-                    className="w-48 lg:w-80 border rounded-md py-2 px-4 focus:outline-none"
+                    className="w-48 lg:w-80 border border-gray-400 rounded-md py-2 px-4 focus:outline-none"
                     placeholder="Search..."
                 />
                 <MagnifyingGlassIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 w-5 h-5" />
