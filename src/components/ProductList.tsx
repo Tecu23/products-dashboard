@@ -9,7 +9,7 @@ type Props = {
 const ProductList = ({ products, loading }: Props) => {
     console.log(products, loading);
     return (
-        <div className="w-full max-w-4xl px-4 flex flex-col items-center gap-8">
+        <div className="w-full max-w-2xl pr-4 flex flex-col items-center gap-8 overflow-auto">
             {products.map((product: Product) => (
                 <ProductCard key={product.id} product={product} />
             ))}

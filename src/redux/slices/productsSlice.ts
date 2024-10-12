@@ -3,11 +3,12 @@ import { ProductsState, Product } from "../../utils/types";
 
 const initialState: ProductsState = {
     products: [],
+    selectedProduct: null,
     loading: false,
 };
 
 export const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}?skip=20`);
+    const response = await fetch(`${import.meta.env.VITE_API_URL}`);
 
     if (!response.ok) {
         throw new Error("Failed to fetch products");
@@ -21,7 +22,11 @@ export const fetchProducts = createAsyncThunk("products/fetchProducts", async ()
 const productsSlice = createSlice({
     name: "products",
     initialState,
-    reducers: {},
+    reducers: {
+        setSelectedProduct: (state, action: PayloadAction<Product | null>) => {
+            state.selectedProduct = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchProducts.pending, (state) => {
             state.loading = true;
@@ -36,4 +41,5 @@ const productsSlice = createSlice({
     },
 });
 
+export const { setSelectedProduct } = productsSlice.actions;
 export default productsSlice.reducer;
