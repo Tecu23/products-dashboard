@@ -1,7 +1,13 @@
 import { ShoppingCartIcon, StarIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+
 const Navbar = () => {
+    const { products: favoriteProducts } = useSelector((state: RootState) => state.favoriteProducts);
+    const { products: cartProducts } = useSelector((state: RootState) => state.cartProducts);
+
     return (
         <nav className="container mx-auto py-4 px-4 lg:px-0 flex justify-between items-center">
             <div className="">
@@ -14,8 +20,14 @@ const Navbar = () => {
             </div>
 
             <div className="flex gap-4">
-                <ShoppingCartIcon className="h-6 w-6" />
-                <StarIcon className="h-6 w-6" />
+                <div className="relative">
+                    <ShoppingCartIcon className="h-6 w-6" />
+                    <div className="absolute -top-1 -right-1 px-1 bg-red-500 rounded-full text-xs font-semibold text-white">{cartProducts.length}</div>
+                </div>
+                <div className="relative">
+                    <StarIcon className="h-6 w-6" />
+                    <div className="absolute -top-1 -right-1 px-1 bg-red-500 rounded-full text-xs font-semibold text-white">{favoriteProducts.length}</div>
+                </div>
             </div>
         </nav>
     );

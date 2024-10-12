@@ -1,15 +1,25 @@
 import { StarIcon as OutlineStarIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/store";
+import { RootState } from "../redux/store";
+import { addToFavorite } from "../redux/slices/favoriteSlice";
 import { setSelectedProduct } from "../redux/slices/productsSlice";
 
 import Rating from "./shared/Rating";
 
 import { Product } from "../utils/types";
+import { StarIcon } from "@heroicons/react/24/solid";
+import { addToCart } from "../redux/slices/cartSlice";
 
 const ProductCard = ({ product }: { product: Product }) => {
     const dispatch = useDispatch<AppDispatch>();
+
+    const { products: favoriteProducts } = useSelector((state: RootState) => state.favoriteProducts);
+    const { products: cartProducts } = useSelector((state: RootState) => state.cartProducts);
+
+    const isFavorite = favoriteProducts.filter((p) => p.id === product.id)[0] != undefined;
+    const isInCart = cartProducts.filter((p) => p.id === product.id)[0] != undefined;
     return (
         <div
             role="button"
@@ -40,12 +50,17 @@ const ProductCard = ({ product }: { product: Product }) => {
 
                     {/* Add to Cart Button and Favorite Button */}
                     <div className="flex items-center gap-2">
-                        <button className="h-8 p-2 flex justify-center items-center rounded-lg transition duration-300 bg-cyan-600 text-white hover:bg-cyan-700 text-xs lg:text-sm font-semibold">
-                            <p className="hidden lg:inline-block">Add to Cart</p>
+                        <button
+                            disabled={isInCart}
+                            onClick={() => dispatch(addToCart(product))}
+                            className="h-8 p-2 flex justify-center items-center rounded-lg transition duration-300 bg-cyan-600 text-white hover:bg-cyan-700 text-xs lg:text-sm font-semibold"
+                        >
+                            {<p className="hidden lg:inline-block">{isInCart ? "In Cart" : "Add to Cart"}</p>}
                             <ShoppingBagIcon className="inline-block lg:hidden h-4 w-4" />
                         </button>
-                        <button className="">
-                            <OutlineStarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-gray-500 hover:text-yellow-400" />
+                        <button disabled={isFavorite} onClick={() => dispatch(addToFavorite(product))} className="">
+                            {!isFavorite && <OutlineStarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-gray-500 hover:text-yellow-500" />}
+                            {isFavorite && <StarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-yellow-500" />}
                         </button>
                     </div>
                 </div>

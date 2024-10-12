@@ -8,7 +8,6 @@ import { fetchProducts } from "../redux/slices/productsSlice";
 
 import ProductList from "./ProductList";
 import ProductViewer from "./ProductViewer";
-import ProductListLoading from "./ProductListLoading";
 
 const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();

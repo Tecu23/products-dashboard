@@ -5,8 +5,22 @@ import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
 import Rating from "./shared/Rating";
 
 import { Product } from "../utils/types";
+import { RootState } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { addToFavorite } from "../redux/slices/favoriteSlice";
+import { addToCart } from "../redux/slices/cartSlice";
+import { StarIcon } from "@heroicons/react/24/solid";
 
 const ProductViewer = ({ product }: { product: Product }) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const { products: favoriteProducts } = useSelector((state: RootState) => state.favoriteProducts);
+    const { products: cartProducts } = useSelector((state: RootState) => state.cartProducts);
+
+    const isFavorite = favoriteProducts.filter((p) => p.id === product.id)[0] != undefined;
+    const isInCart = cartProducts.filter((p) => p.id === product.id)[0] != undefined;
+
     return (
         <div className="hidden lg:block bg-gray-200 rounded-lg p-8 shadow-md h-[800px] w-[1200px] mx-auto">
             <div className="flex gap-10 h-full">
@@ -66,9 +80,16 @@ const ProductViewer = ({ product }: { product: Product }) => {
                         </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <button className="py-2 px-4 rounded-md transition duration-300 bg-cyan-600 text-white hover:bg-cyan-700">Add to Cart</button>
-                        <button className="">
-                            <OutlineStarIcon className="h-6 w-6 text-gray-500 hover:text-yellow-400" />
+                        <button
+                            disabled={isInCart}
+                            onClick={() => dispatch(addToCart(product))}
+                            className="py-2 px-4 rounded-md transition duration-300 bg-cyan-600 text-white hover:bg-cyan-700"
+                        >
+                            {isInCart ? "In Cart" : "Add to Cart"}
+                        </button>
+                        <button disabled={isFavorite} className="" onClick={() => dispatch(addToFavorite(product))}>
+                            {!isFavorite && <OutlineStarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-gray-500 hover:text-yellow-500" />}
+                            {isFavorite && <StarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-yellow-500" />}
                         </button>
                     </div>
                 </div>

@@ -47,3 +47,11 @@ export interface ProductsState {
     selectedProduct: Product | null;
     loading: boolean;
 }
+
+export interface FavoriteProductsState {
+    products: Product[];
+}
+
+export interface CartProductsState {
+    products: Product[];
+}
