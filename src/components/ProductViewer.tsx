@@ -76,7 +76,7 @@ const ProductViewer = ({ product }: { product: Product }) => {
                         <div className="flex flex-col md:items-end">
                             <div className="text-xl font-semibold text-gray-900">
                                 ${product.price}
-                                <span className="text-sm text-gray-500 line-through ml-2">${((product.price * (100 + product.discountPercentage)) / 100).toFixed(2)}</span>
+                                <span className="text-sm text-gray-600 line-through ml-2">${((product.price * (100 + product.discountPercentage)) / 100).toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
@@ -87,15 +87,15 @@ const ProductViewer = ({ product }: { product: Product }) => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <h3 className="text-xl font-bold text-gray-800 ">Description</h3>
+                        <h2 className="text-xl font-bold text-gray-800 ">Description</h2>
                         <p className="text-gray-700 text-base">{product.description}</p>
                         <div className="flex flex-col gap-2">
                             <div>
-                                <h4 className="text-lg font-semibold text-gray-800">Dimensions</h4>
+                                <h3 className="text-lg font-semibold text-gray-800">Dimensions</h3>
                                 <p className="text-gray-600">{product.dimensions.width + " x " + product.dimensions.height + " x " + product.dimensions.depth}</p>
                             </div>
                             <div>
-                                <h4 className="text-lg font-semibold text-gray-800">Weight</h4>
+                                <h3 className="text-lg font-semibold text-gray-800">Weight</h3>
                                 <p className="text-gray-600">{product.weight} kg</p>
                             </div>
                         </div>
@@ -130,11 +130,12 @@ const ProductViewer = ({ product }: { product: Product }) => {
                             ref={addToCartButtonRef}
                             disabled={isInCart}
                             onClick={handleAddToCart}
-                            className="py-2 px-4 rounded-md transition duration-300 bg-cyan-600 text-white hover:bg-cyan-700"
+                            aria-label="Add product to cart"
+                            className="py-2 px-4 rounded-md transition duration-300 bg-cyan-700 text-white hover:bg-cyan-800"
                         >
                             {isInCart ? "In Cart" : "Add to Cart"}
                         </button>
-                        <button ref={addToFavoriteButtonRef} disabled={isFavorite} className="" onClick={handleAddToFavorite}>
+                        <button aria-label="Add product to favorites" ref={addToFavoriteButtonRef} disabled={isFavorite} className="" onClick={handleAddToFavorite}>
                             {!isFavorite && <OutlineStarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-gray-500 hover:text-yellow-500" />}
                             {isFavorite && <StarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-yellow-500" />}
                         </button>

@@ -15,8 +15,8 @@ const ProductList = ({ products, loading, targetRef }: Props) => {
         <div className="w-full max-w-2xl px-4 lg:pr-4 flex flex-col items-center gap-8 overflow-auto">
             {products.length == 0 && loading && <ProductListLoading />}
             {products.map((product, idx) => (
-                <div ref={idx === products.length - 1 ? targetRef : null} className="w-full">
-                    <ProductCard key={product.id} product={product} />
+                <div key={product.id} ref={idx === products.length - 1 ? targetRef : null} className="w-full">
+                    <ProductCard product={product} />
                 </div>
             ))}
             {loading && (

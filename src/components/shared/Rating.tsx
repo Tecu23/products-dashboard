@@ -7,11 +7,11 @@ const Rating = ({ rating }: { rating: number }) => {
     return (
         <div className="flex items-center text-yellow-500">
             {[...Array(fullStars)].map((_, idx) => (
-                <StarIcon key={idx} className="h-4 lg:h-6 w-4 lg:w-6" />
+                <StarIcon key={idx} className="h-4 lg:h-6 w-4 lg:w-6" aria-hidden="true" />
             ))}
 
             {hasHalfStar && (
-                <svg key="half" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 lg:h-6 w-4 lg:w-6">
+                <svg key="half" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 lg:h-6 w-4 lg:w-6" aria-hidden="true">
                     <defs>
                         <clipPath id="half">
                             <rect x="0" y="0" width="12" height="24" />
