@@ -41,8 +41,8 @@ const ProductViewer = () => {
                 <div className="flex flex-col justify-between items-end gap-2 w-3/5 flex-grow ">
                     <div className="flex flex-col gap-4 items-end w-full">
                         <div className="flex mt-2">
-                            {[...Array(5)].map(() => (
-                                <StarIcon className="h-6 w-6 text-yellow-400" />
+                            {[...Array(5)].map((_, idx) => (
+                                <StarIcon key={idx} className="h-6 w-6 text-yellow-400" />
                             ))}
                         </div>
 

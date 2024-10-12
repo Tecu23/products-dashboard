@@ -1,13 +1,18 @@
 import ProductCard from "./ProductCard";
+import { Product } from "../utils/types";
 
-const ProductList = () => {
+type Props = {
+    products: Product[];
+    loading: boolean;
+};
+
+const ProductList = ({ products, loading }: Props) => {
+    console.log(products, loading);
     return (
         <div className="w-full max-w-4xl px-4 flex flex-col items-center gap-8">
-            {/* Example product cards */}
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {products.map((product: Product) => (
+                <ProductCard key={product.id} product={product} />
+            ))}
         </div>
     );
 };

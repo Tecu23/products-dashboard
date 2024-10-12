@@ -1,7 +1,8 @@
 import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as OutlineStarIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
+import { Product } from "../utils/types";
 
-const ProductCard = () => {
+const ProductCard = ({ product }: { product: Product }) => {
     return (
         <button className="flex flex-row gap-4 items-center bg-neutral-100 rounded-lg shadow-md px-4 lg:px-8 py-4 hover:shadow-lg w-full max-w-2xl">
             {/* Product Image */}
