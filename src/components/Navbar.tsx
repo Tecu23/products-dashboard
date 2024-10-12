@@ -3,8 +3,14 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import CartDropdown from "./shared/CartDropdown";
+import { useState } from "react";
+import FavoriteDropdown from "./shared/FavoriteDropdown";
 
 const Navbar = () => {
+    const [openCartDropdown, setOpenCartDropdown] = useState(false);
+    const [openFavoriteDropdown, setOpenFavoriteDropdown] = useState(false);
+
     const { products: favoriteProducts } = useSelector((state: RootState) => state.favoriteProducts);
     const { products: cartProducts } = useSelector((state: RootState) => state.cartProducts);
 
@@ -21,12 +27,18 @@ const Navbar = () => {
 
             <div className="flex gap-4">
                 <div className="relative">
-                    <ShoppingCartIcon className="h-6 w-6" />
+                    <button onClick={() => setOpenCartDropdown(!openCartDropdown)} className="h-6 w-6">
+                        <ShoppingCartIcon className="h-6 w-6" />
+                    </button>
                     <div className="absolute -top-1 -right-1 px-1 bg-red-500 rounded-full text-xs font-semibold text-white">{cartProducts.length}</div>
+                    {openCartDropdown && <CartDropdown products={cartProducts} />}
                 </div>
                 <div className="relative">
-                    <StarIcon className="h-6 w-6" />
+                    <button onClick={() => setOpenFavoriteDropdown(!openFavoriteDropdown)} className="h-6 w-6">
+                        <StarIcon className="h-6 w-6" />
+                    </button>
                     <div className="absolute -top-1 -right-1 px-1 bg-red-500 rounded-full text-xs font-semibold text-white">{favoriteProducts.length}</div>
+                    {openFavoriteDropdown && <FavoriteDropdown products={favoriteProducts} />}
                 </div>
             </div>
         </nav>

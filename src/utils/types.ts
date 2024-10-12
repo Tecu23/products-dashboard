@@ -52,6 +52,10 @@ export interface FavoriteProductsState {
     products: Product[];
 }
 
+export interface CartProduct extends Product {
+    quantity: number;
+}
+
 export interface CartProductsState {
-    products: Product[];
+    products: CartProduct[];
 }
