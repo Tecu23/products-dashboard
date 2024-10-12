@@ -1,9 +1,12 @@
-import { StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as OutlineStarIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
-import { Product } from "../utils/types";
-import { setSelectedProduct } from "../redux/slices/productsSlice";
+
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/store";
+import { setSelectedProduct } from "../redux/slices/productsSlice";
+
+import Rating from "./shared/Rating";
+
+import { Product } from "../utils/types";
 
 const ProductCard = ({ product }: { product: Product }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -16,7 +19,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             className="flex flex-row gap-4 items-center bg-neutral-100 rounded-lg shadow-md px-4 lg:px-8 py-4 hover:shadow-lg w-full max-w-2xl"
         >
             {/* Product Image */}
-            <div className="w-24 h-24 rounded-full flex justify-center items-center">
+            <div className="w-24 h-24 flex-shrink-0 flex-grow-0 flex-auto rounded-full flex justify-center items-center bg-white-100 bg-white">
                 <img src={product.thumbnail} className="object-fill" />
             </div>
 
@@ -33,14 +36,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 
                 {/* Ratings */}
                 <div className="flex justify-between items-center">
-                    <div className="flex items-center mt-2">
-                        {[...Array(Math.round(product.rating))].map((_, idx) => (
-                            <StarIcon key={idx} className="h-4 lg:h-6 w-4 lg:w-6 text-yellow-400" />
-                        ))}
-                        {[...Array(Math.round(5 - product.rating))].map((_, idx) => (
-                            <OutlineStarIcon key={idx} className="h-4 lg:h-6 w-4 lg:w-6 text-gray-400" />
-                        ))}
-                    </div>
+                    <Rating rating={product.rating} />
 
                     {/* Add to Cart Button and Favorite Button */}
                     <div className="flex items-center gap-2">

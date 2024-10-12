@@ -1,7 +1,10 @@
-import { StarIcon } from "@heroicons/react/24/solid";
-import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
-import { Product } from "../utils/types";
 import { formatDistance } from "date-fns";
+
+import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
+
+import Rating from "./shared/Rating";
+
+import { Product } from "../utils/types";
 
 const ProductViewer = ({ product }: { product: Product }) => {
     return (
@@ -41,12 +44,7 @@ const ProductViewer = ({ product }: { product: Product }) => {
                 <div className="flex flex-col justify-between items-end gap-2 w-2/5 h-full">
                     <div className="flex flex-col gap-4 items-end w-full h-[90%]">
                         <div className="flex mt-2">
-                            {[...Array(Math.round(product.rating))].map((_, idx) => (
-                                <StarIcon key={idx} className="h-6 w-6 text-yellow-400" />
-                            ))}
-                            {[...Array(5 - Math.round(product.rating))].map((_, idx) => (
-                                <OutlineStarIcon key={idx} className="h-6 w-6 text-gray-400" />
-                            ))}
+                            <Rating rating={product.rating} />
                         </div>
 
                         <div className="w-full py-2 overflow-auto h-full">
@@ -54,13 +52,7 @@ const ProductViewer = ({ product }: { product: Product }) => {
                                 {product.reviews.map((review, index) => (
                                     <div key={index} className="bg-white p-4 rounded-lg shadow-md flex-col justify-start items-start gap-4">
                                         <div className="flex justify-start items-center">
-                                            {" "}
-                                            {[...Array(Math.round(review.rating))].map((_, idx) => (
-                                                <StarIcon key={idx} className="h-4 w-4 text-yellow-400" />
-                                            ))}
-                                            {[...Array(5 - Math.round(review.rating))].map((_, idx) => (
-                                                <OutlineStarIcon key={idx} className="h-4 w-4 text-gray-400" />
-                                            ))}
+                                            <Rating rating={review.rating} />
                                         </div>
 
                                         <p className="text-gray-700 text-base font-semibold py-2">{review.comment}</p>

@@ -19,13 +19,12 @@ const Dashboard = () => {
     }, [dispatch]);
 
     return (
-        <main className="container mx-auto flex flex-row pt-10 lg:py-20 gap-8 h-[85vh] max-h-[1000px]">
-            {products.length == 0 && loading && <ProductListLoading />}
-            {products.length > 0 && <ProductList products={products} loading={loading} />}
+        <main className="container mx-auto flex flex-row pt-10 lg:py-20 gap-8 h-[85vh] max-h-[90%]">
+            <ProductList products={products} loading={loading} />
 
             {selectedProduct != null && <ProductViewer product={selectedProduct} />}
             {selectedProduct == null && !loading && (
-                <div className="flex items-center justify-center h-full w-full p-4 bg-gray-200 rounded-lg shadow-md">
+                <div className="hidden lg:flex items-center justify-center h-full w-full p-4 bg-gray-200 rounded-lg shadow-md">
                     <p className="text-xl font-semibold text-gray-500">Select a product to view its details</p>
                 </div>
             )}
