@@ -46,6 +46,8 @@ export interface ProductsState {
     products: Product[];
     selectedProduct: Product | null;
     loading: boolean;
+    page: number;
+    hasMore: boolean;
 }
 
 export interface FavoriteProductsState {

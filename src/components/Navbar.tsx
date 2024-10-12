@@ -1,10 +1,11 @@
+import { useState } from "react";
+
 import { ShoppingCartIcon, StarIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import CartDropdown from "./shared/CartDropdown";
-import { useState } from "react";
 import FavoriteDropdown from "./shared/FavoriteDropdown";
 
 const Navbar = () => {
@@ -30,14 +31,18 @@ const Navbar = () => {
                     <button onClick={() => setOpenCartDropdown(!openCartDropdown)} className="h-6 w-6">
                         <ShoppingCartIcon className="h-6 w-6" />
                     </button>
-                    <div className="absolute -top-1 -right-1 px-1 bg-red-500 rounded-full text-xs font-semibold text-white">{cartProducts.length}</div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 flex justify-center items-center rounded-full text-xs font-semibold text-white">
+                        {cartProducts.length}
+                    </div>
                     {openCartDropdown && <CartDropdown products={cartProducts} />}
                 </div>
                 <div className="relative">
                     <button onClick={() => setOpenFavoriteDropdown(!openFavoriteDropdown)} className="h-6 w-6">
                         <StarIcon className="h-6 w-6" />
                     </button>
-                    <div className="absolute -top-1 -right-1 px-1 bg-red-500 rounded-full text-xs font-semibold text-white">{favoriteProducts.length}</div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 flex justify-center items-center rounded-full text-xs font-semibold text-white">
+                        {favoriteProducts.length}
+                    </div>
                     {openFavoriteDropdown && <FavoriteDropdown products={favoriteProducts} />}
                 </div>
             </div>

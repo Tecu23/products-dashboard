@@ -55,8 +55,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                             onClick={() => dispatch(addToCart(product))}
                             className="h-8 p-2 flex justify-center items-center rounded-lg transition duration-300 bg-cyan-600 text-white hover:bg-cyan-700 text-xs lg:text-sm font-semibold"
                         >
-                            {<p className="hidden lg:inline-block">{isInCart ? "In Cart" : "Add to Cart"}</p>}
-                            <ShoppingBagIcon className="inline-block lg:hidden h-4 w-4" />
+                            {<p className="inline-block">{isInCart ? "In Cart" : "Add to Cart"}</p>}
                         </button>
                         <button disabled={isFavorite} onClick={() => dispatch(addToFavorite(product))} className="">
                             {!isFavorite && <OutlineStarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-gray-500 hover:text-yellow-500" />}

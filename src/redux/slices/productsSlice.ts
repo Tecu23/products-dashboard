@@ -1,14 +1,18 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { ProductsState, Product } from "../../utils/types";
 
+const PAGE_SIZE = 20;
+
 const initialState: ProductsState = {
     products: [],
     selectedProduct: null,
     loading: false,
+    page: 0,
+    hasMore: true,
 };
 
-export const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}`);
+export const fetchProducts = createAsyncThunk("products/fetchProducts", async (page: number) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}?skip=${page * PAGE_SIZE}&limit=${PAGE_SIZE}`);
 
     if (!response.ok) {
         throw new Error("Failed to fetch products");
@@ -18,7 +22,6 @@ export const fetchProducts = createAsyncThunk("products/fetchProducts", async ()
     return data.products;
 });
 
-// Products slice
 const productsSlice = createSlice({
     name: "products",
     initialState,
@@ -34,6 +37,8 @@ const productsSlice = createSlice({
         builder.addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
             state.products = [...state.products, ...action.payload];
             state.loading = false;
+            state.page += 1;
+            state.hasMore = action.payload.length > 0;
         });
         builder.addCase(fetchProducts.rejected, (state) => {
             state.loading = false;
