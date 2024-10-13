@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 import { formatDistance } from "date-fns";
 
-import { StarIcon } from "@heroicons/react/24/solid";
+import { ArrowsPointingOutIcon, StarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
 
 import gsap from "gsap";
@@ -17,7 +17,7 @@ import { addToFavorite } from "../redux/slices/favoriteSlice";
 
 import { Product } from "../utils/types";
 
-const ProductViewer = ({ product }: { product: Product }) => {
+const ProductViewer = ({ product, openImageModal }: { product: Product; openImageModal: () => void }) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const { products: favoriteProducts } = useSelector((state: RootState) => state.favoriteProducts);
@@ -83,7 +83,9 @@ const ProductViewer = ({ product }: { product: Product }) => {
                     <div className="w-full">
                         <div className="relative">
                             <img src={product.thumbnail} alt={product.title} className="w-full h-64 md:w-80 md:h-80 object-cover rounded-lg" />
-                            <button className="absolute top-4 right-4 bg-white text-gray-700 p-2 rounded-md shadow-md hover:bg-gray-100">⤢</button>
+                            <button onClick={() => openImageModal()} className="absolute top-4 right-4 bg-white text-gray-700 p-2 rounded-md shadow-md hover:bg-gray-100">
+                                <ArrowsPointingOutIcon className="w-5 h-5" />
+                            </button>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">

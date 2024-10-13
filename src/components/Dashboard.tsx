@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import gsap from "gsap";
 
@@ -10,6 +10,7 @@ import { fetchProducts } from "../redux/slices/productsSlice";
 
 import ProductList from "./ProductList";
 import ProductViewer from "./ProductViewer";
+import ImageModalCarousel from "./shared/ImageModal";
 
 const Dashboard = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +21,9 @@ const Dashboard = () => {
     const observerTarget = useRef<HTMLDivElement | null>(null);
 
     const productViewerRef = useRef<HTMLDivElement | null>(null);
+
+    const [openImageModal, setOpenImageModal] = useState(false);
+    const [imageCurrentIndex, setImageCurrentIndex] = useState(0);
 
     // only first initial fetch
     useEffect(() => {
@@ -81,8 +85,11 @@ const Dashboard = () => {
 
             {selectedProduct != null && (
                 <div ref={productViewerRef} className="max-w-4xl w-[1200px] h-full hidden lg:block ">
-                    <ProductViewer product={selectedProduct} />{" "}
+                    <ProductViewer product={selectedProduct} openImageModal={() => setOpenImageModal(true)} />
                 </div>
+            )}
+            {selectedProduct != null && openImageModal && (
+                <ImageModalCarousel images={selectedProduct.images} currentIndex={imageCurrentIndex} onClose={() => setOpenImageModal(false)} />
             )}
         </main>
     );
