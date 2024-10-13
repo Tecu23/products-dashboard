@@ -21,7 +21,7 @@ const ImageModalCarousel = ({ images, onClose }: Props) => {
     return (
         <div ref={modalRef} className="fixed inset-0 z-50 bg-black bg-opacity-75 flex items-center justify-center w-full min-h-screen">
             <div className="relative w-11/12 max-w-4xl mx-auto bg-white rounded-lg shadow-lg">
-                <button onClick={onClose} className="absolute top-4 right-4 bg-white text-black rounded-full p-2 shadow hover:bg-gray-200">
+                <button aria-label="Close image modal" onClick={onClose} className="absolute top-4 right-4 bg-white text-black rounded-full p-2 shadow hover:bg-gray-200">
                     <XMarkIcon className="w-6 h-6" aria-hidden="true" />
                 </button>
                 <div className="overflow-hidden">
@@ -34,12 +34,12 @@ const ImageModalCarousel = ({ images, onClose }: Props) => {
                     </div>
                 </div>
                 {images.length > 1 && (
-                    <button onClick={handlePreviousSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2">
+                    <button aria-label="Show previous image" onClick={handlePreviousSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2">
                         <ChevronLeftIcon className="w-12 h-12" />
                     </button>
                 )}
                 {images.length > 1 && (
-                    <button onClick={handleNextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2">
+                    <button aria-label="Show next image" onClick={handleNextSlide} className="absolute top-1/2 right-4 transform -translate-y-1/2">
                         <ChevronRightIcon className="w-12 h-12" />
                     </button>
                 )}

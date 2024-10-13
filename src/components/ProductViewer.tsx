@@ -85,7 +85,11 @@ const ProductViewer = ({ product, openImageModal }: { product: Product; openImag
                     <div className="w-full">
                         <div className="relative">
                             <img src={product.thumbnail} alt={product.title} className="w-full h-64 md:w-80 md:h-80 object-cover rounded-lg" />
-                            <button onClick={() => openImageModal()} className="absolute top-4 right-4 bg-white text-gray-700 p-2 rounded-md shadow-md hover:bg-gray-100">
+                            <button
+                                aria-label="Open image modal"
+                                onClick={() => openImageModal()}
+                                className="absolute top-4 right-4 bg-white text-gray-700 p-2 rounded-md shadow-md hover:bg-gray-100"
+                            >
                                 <ArrowsPointingOutIcon className="w-5 h-5" />
                             </button>
                         </div>
@@ -135,6 +139,7 @@ const ProductViewer = ({ product, openImageModal }: { product: Product; openImag
                                                     setReviewIndex((reviewIndex - 1 + product.reviews.length) % product.reviews.length);
                                                 }}
                                                 className="absolute top-1/2 left-0 transform -translate-y-1/2"
+                                                aria-label="Show previous review"
                                             >
                                                 <ChevronLeftIcon className="w-6 h-6" />
                                             </button>
@@ -143,6 +148,7 @@ const ProductViewer = ({ product, openImageModal }: { product: Product; openImag
                                             <button
                                                 onClick={() => setReviewIndex((reviewIndex - 1 + product.reviews.length) % product.reviews.length)}
                                                 className="absolute top-1/2 right-0 transform -translate-y-1/2"
+                                                aria-label="Show next review"
                                             >
                                                 <ChevronRightIcon className="w-6 h-6" />
                                             </button>
