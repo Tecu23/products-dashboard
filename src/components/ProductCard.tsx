@@ -75,7 +75,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             className="flex flex-row gap-4 items-center bg-neutral-100 rounded-lg shadow-md px-4 xl:px-8 py-4 hover:shadow-lg w-full max-w-2xl"
         >
             {/* Product Image */}
-            <div className="w-16 h-16 xl:w-24 xl:h-24 flex-shrink-0 flex-grow-0 flex-auto rounded-full flex justify-center items-center bg-white-100 bg-white">
+            <div className="w-16 h-16 xl:w-24 xl:h-24 flex-shrink-0 flex-grow-0 flex-auto rounded-full flex justify-center items-center bg-white">
                 <img src={product.thumbnail} className="object-fill" alt={`thumbnail-${product.id}`} />
             </div>
 

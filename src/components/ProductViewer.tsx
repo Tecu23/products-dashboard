@@ -1,8 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { formatDistance } from "date-fns";
 
-import { ArrowsPointingOutIcon, StarIcon } from "@heroicons/react/24/solid";
+import { ArrowsPointingOutIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
 
 import gsap from "gsap";
@@ -28,6 +28,8 @@ const ProductViewer = ({ product, openImageModal }: { product: Product; openImag
 
     const addToCartButtonRef = useRef<HTMLButtonElement | null>(null);
     const addToFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    const [reviewIndex, setReviewIndex] = useState(0);
 
     const handleAddToCart = () => {
         if (addToCartButtonRef.current) {
@@ -110,18 +112,41 @@ const ProductViewer = ({ product, openImageModal }: { product: Product; openImag
                         </div>
 
                         <div className="w-full py-2 overflow-auto h-full">
-                            <div className="space-y-4 ">
-                                {product.reviews.map((review, index) => (
-                                    <div key={index} className="bg-white p-4 rounded-lg shadow-md flex-col justify-start items-start gap-4">
+                            <div className="relative">
+                                {product.reviews.map((review, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`w-full relative flex-shrink-0 ${idx !== reviewIndex ? "hidden" : ""} bg-white p-4 rounded-lg shadow-md flex flex-col justify-between`}
+                                    >
                                         <div className="flex justify-start items-center">
                                             <Rating rating={review.rating} />
                                         </div>
 
-                                        <p className="text-gray-700 text-base font-semibold py-2">{review.comment}</p>
-                                        <div className="flex flex-col items-end justify-between ">
-                                            <p className="text-gray-700 text-sm font-semibold">{review.reviewerName}</p>
-                                            <p className="text-gray-700">{formatDistance(review.date, new Date(), { addSuffix: true })}</p>
+                                        <p className="text-gray-700 text-xs xl:text-base font-semibold py-2 pl-4 flex-grow self-center flex justify-center items-center">
+                                            {review.comment}
+                                        </p>
+                                        <div className="flex flex-col items-end justify-between self-end">
+                                            <p className="text-gray-700 text-xl lg:text-sm font-semibold">{review.reviewerName}</p>
+                                            <p className="text-gray-700 text-xs">{formatDistance(review.date, new Date(), { addSuffix: true })}</p>
                                         </div>
+                                        {product.reviews.length > 1 && (
+                                            <button
+                                                onClick={() => {
+                                                    setReviewIndex((reviewIndex - 1 + product.reviews.length) % product.reviews.length);
+                                                }}
+                                                className="absolute top-1/2 left-0 transform -translate-y-1/2"
+                                            >
+                                                <ChevronLeftIcon className="w-6 h-6" />
+                                            </button>
+                                        )}
+                                        {product.reviews.length > 1 && (
+                                            <button
+                                                onClick={() => setReviewIndex((reviewIndex - 1 + product.reviews.length) % product.reviews.length)}
+                                                className="absolute top-1/2 right-0 transform -translate-y-1/2"
+                                            >
+                                                <ChevronRightIcon className="w-6 h-6" />
+                                            </button>
+                                        )}
                                     </div>
                                 ))}
                             </div>
