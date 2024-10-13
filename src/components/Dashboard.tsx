@@ -23,7 +23,6 @@ const Dashboard = () => {
     const productViewerRef = useRef<HTMLDivElement | null>(null);
 
     const [openImageModal, setOpenImageModal] = useState(false);
-    const [imageCurrentIndex, setImageCurrentIndex] = useState(0);
 
     // only first initial fetch
     useEffect(() => {
@@ -88,9 +87,7 @@ const Dashboard = () => {
                     <ProductViewer product={selectedProduct} openImageModal={() => setOpenImageModal(true)} />
                 </div>
             )}
-            {selectedProduct != null && openImageModal && (
-                <ImageModalCarousel images={selectedProduct.images} currentIndex={imageCurrentIndex} onClose={() => setOpenImageModal(false)} />
-            )}
+            {selectedProduct != null && openImageModal && <ImageModalCarousel images={selectedProduct.images} onClose={() => setOpenImageModal(false)} />}
         </main>
     );
 };

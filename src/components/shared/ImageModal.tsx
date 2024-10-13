@@ -1,19 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 type Props = {
     images: string[];
-    currentIndex: number;
     onClose: () => void;
 };
 
-const ImageModalCarousel = ({ images, currentIndex, onClose }: Props) => {
-    const [index, setIndex] = useState(currentIndex);
+const ImageModalCarousel = ({ images, onClose }: Props) => {
+    const [index, setIndex] = useState(0);
     const modalRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        setIndex(currentIndex);
-    }, [currentIndex]);
 
     const handleNextSlide = () => {
         setIndex((index + 1) % images.length);
