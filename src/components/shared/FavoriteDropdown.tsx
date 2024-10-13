@@ -18,11 +18,13 @@ function FavoriteDropdown({ products }: Props) {
                 ) : (
                     <ul className="flex flex-col gap-3">
                         {products.map((product: Product) => (
-                            <li key={product.id} className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0 flex-grow-0">
-                                    <img src={product.thumbnail} className="object-fill" alt={`favorite-thumbnail-${product.id}`} />
+                            <li key={product.id} className="flex items-center justify-between">
+                                <div className="flex gap-3 items-center">
+                                    <div className="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0 flex-grow-0">
+                                        <img src={product.thumbnail} className="object-fill" alt={`favorite-thumbnail-${product.id}`} />
+                                    </div>
+                                    <p className="text-sm font-bold">{product.title}</p>
                                 </div>
-                                <p className="text-sm font-bold">{product.title}</p>
                                 <button
                                     onClick={() => {
                                         dispatch(removeFromFavorite({ id: product.id }));
