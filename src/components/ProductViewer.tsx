@@ -89,7 +89,7 @@ const ProductViewer = ({ product, openImageModal }: { product: Product; openImag
                         ))}
                     </div>
 
-                    <div className="w-full py-2 overflow-auto h-full">
+                    <div className="w-full py-8 overflow-auto h-full">
                         <div className="relative">
                             {product.reviews.map((review, idx) => (
                                 <div
