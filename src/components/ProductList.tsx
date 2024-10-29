@@ -12,10 +12,10 @@ type Props = {
 
 const ProductList = ({ products, loading, targetRef }: Props) => {
     return (
-        <div className="w-full max-w-2xl px-4 lg:pr-4 flex flex-col items-center gap-8 overflow-auto">
+        <div className="w-full max-w-2xl px-4 lg:pr-4 flex flex-wrap justify-center items-center overflow-auto">
             {products.length == 0 && loading && <ProductListLoading />}
             {products.map((product, idx) => (
-                <div key={product.id} ref={idx === products.length - 1 ? targetRef : null} className="w-full">
+                <div key={product.id} ref={idx === products.length - 1 ? targetRef : null} className="p-2">
                     <ProductCard product={product} />
                 </div>
             ))}

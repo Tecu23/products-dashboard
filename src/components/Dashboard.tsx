@@ -79,7 +79,7 @@ const Dashboard = () => {
     }, [selectedProduct]);
 
     return (
-        <main className="container mx-auto flex flex-row pt-10 lg:py-20 gap-8 h-[85vh] max-h-[90%]">
+        <main className="container mx-auto flex flex-row pt-10 lg:py-20 gap-8 h-[90vh] max-h-[90%]">
             <ProductList targetRef={observerTarget} products={products} loading={loading} />
 
             {selectedProduct != null && (

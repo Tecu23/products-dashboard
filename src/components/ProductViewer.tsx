@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 
 import { formatDistance } from "date-fns";
 
-import { ArrowsPointingOutIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
+import { ArrowsPointingOutIcon, HeartIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
 
 import gsap from "gsap";
 
@@ -70,112 +70,106 @@ const ProductViewer = ({ product, openImageModal }: { product: Product; openImag
     };
 
     return (
-        <div className="bg-gray-200 rounded-lg p-8 shadow-md w-full h-full">
-            <div className="flex gap-10 h-full">
-                <div className="flex flex-col gap-2 h-full w-3/5">
-                    <div className="flex justify-between items-center">
-                        <h2 className="w-60 text-2xl font-bold text-gray-800">{product.title}</h2>
-                        <div className="flex flex-col md:items-end">
-                            <div className="text-xl font-semibold text-gray-900">
-                                ${product.price}
-                                <span className="text-sm text-gray-600 line-through ml-2">${((product.price * (100 + product.discountPercentage)) / 100).toFixed(2)}</span>
-                            </div>
-                        </div>
+        <>
+            <div className="bg-white rounded p-6 shadow-lg w-full h-full flex gap-8">
+                <div className="flex flex-col w-[calc(50% - 16px)] flex-shrink-0 flex-grow-0">
+                    <div className="relative w-full flex justify-center items-center">
+                        <img src={product.thumbnail} alt={product.title} className="w-full" />
+                        <button
+                            aria-label="Open image modal"
+                            onClick={() => openImageModal()}
+                            className="absolute top-4 right-4 bg-white text-gray-700 p-2 rounded-md shadow-md hover:bg-gray-100"
+                        >
+                            <ArrowsPointingOutIcon className="w-5 h-5" />
+                        </button>
                     </div>
-                    <div className="w-full">
+                    <div className="flex flex-row">
+                        {product.images.map((img) => (
+                            <img src={img} className="w-20 h-20" />
+                        ))}
+                    </div>
+
+                    <div className="w-full py-2 overflow-auto h-full">
                         <div className="relative">
-                            <img src={product.thumbnail} alt={product.title} className="w-full h-64 md:w-80 md:h-80 object-cover rounded-lg" />
-                            <button
-                                aria-label="Open image modal"
-                                onClick={() => openImageModal()}
-                                className="absolute top-4 right-4 bg-white text-gray-700 p-2 rounded-md shadow-md hover:bg-gray-100"
-                            >
-                                <ArrowsPointingOutIcon className="w-5 h-5" />
-                            </button>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <h2 className="text-xl font-bold text-gray-800 ">Description</h2>
-                        <p className="text-gray-700 text-base">{product.description}</p>
-                        <div className="flex flex-col gap-2">
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-800">Dimensions</h3>
-                                <p className="text-gray-600">{product.dimensions.width + " x " + product.dimensions.height + " x " + product.dimensions.depth}</p>
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-800">Weight</h3>
-                                <p className="text-gray-600">{product.weight} kg</p>
-                            </div>
+                            {product.reviews.map((review, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`w-full min-h-[130px] relative flex-shrink-0 ${idx !== reviewIndex ? "hidden" : ""}  p-4 rounded-lg shadow-md flex flex-col justify-between gap-4 bg-gray-50`}
+                                >
+                                    <p className="text-[#1C1C1C] text-xs xl:text-base font-semibold flex-grow self-center flex justify-center items-center">{review.comment}</p>
+
+                                    <div className="w-full flex flex-row justify-between items-end">
+                                        <Rating rating={review.rating} size={"small"} />
+                                        <div className="flex flex-col items-end justify-between self-end">
+                                            <p className="text-[#1C1C1C] text-xl lg:text-sm font-semibold">{review.reviewerName}</p>
+                                            <p className="text-[#1C1C1C] text-xs">{formatDistance(review.date, new Date(), { addSuffix: true })}</p>
+                                        </div>
+                                    </div>
+                                    {product.reviews.length > 1 && (
+                                        <button
+                                            onClick={() => {
+                                                setReviewIndex((reviewIndex - 1 + product.reviews.length) % product.reviews.length);
+                                            }}
+                                            className="absolute top-1/2 left-0 transform -translate-y-1/2"
+                                            aria-label="Show previous review"
+                                        >
+                                            <ChevronLeftIcon className="w-6 h-6" />
+                                        </button>
+                                    )}
+                                    {product.reviews.length > 1 && (
+                                        <button
+                                            onClick={() => setReviewIndex((reviewIndex - 1 + product.reviews.length) % product.reviews.length)}
+                                            className="absolute top-1/2 right-0 transform -translate-y-1/2"
+                                            aria-label="Show next review"
+                                        >
+                                            <ChevronRightIcon className="w-6 h-6" />
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col justify-between items-end gap-2 w-2/5 h-full">
-                    <div className="flex flex-col gap-4 items-end w-full h-[90%]">
-                        <div className="flex mt-2">
-                            <Rating rating={product.rating} />
-                        </div>
+                <div className="flex flex-col gap-2 relative">
+                    <div className="absolute top-0 right-0 rounded-md border border-[#DEE2E7] w-10 h-10 flex items-center justify-center">
+                        <button aria-label="Add product to favorites" ref={addToFavoriteButtonRef} disabled={isFavorite} onClick={handleAddToFavorite} className="">
+                            {!isFavorite && <OutlineHeartIcon className="h-4 xl:h-6 w-4 xl:w-6 text-[#0D6EFD] hover:text-blue-700" />}
+                            {isFavorite && <HeartIcon className="h-4 xl:h-6 w-4 xl:w-6 text-red-500" />}
+                        </button>
+                    </div>
+                    <h2 className="text-xl font-bold text-[#1C1C1C]">{product.title}</h2>
+                    <Rating rating={product.rating} size="large" />
+                    <div className="text-lg font-medium pb-6 border-b border-[#EFF2F4] text-[#1C1C1C]">
+                        ${product.price}
+                        <span className="text-[#8B96A5] line-through ml-2">${((product.price * (100 + product.discountPercentage)) / 100).toFixed(2)}</span>
+                    </div>
 
-                        <div className="w-full py-2 overflow-auto h-full">
-                            <div className="relative">
-                                {product.reviews.map((review, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`w-full relative flex-shrink-0 ${idx !== reviewIndex ? "hidden" : ""} bg-white p-4 rounded-lg shadow-md flex flex-col justify-between`}
-                                    >
-                                        <div className="flex justify-start items-center">
-                                            <Rating rating={review.rating} />
-                                        </div>
-
-                                        <p className="text-gray-700 text-xs xl:text-base font-semibold py-2 pl-4 flex-grow self-center flex justify-center items-center">
-                                            {review.comment}
-                                        </p>
-                                        <div className="flex flex-col items-end justify-between self-end">
-                                            <p className="text-gray-700 text-xl lg:text-sm font-semibold">{review.reviewerName}</p>
-                                            <p className="text-gray-700 text-xs">{formatDistance(review.date, new Date(), { addSuffix: true })}</p>
-                                        </div>
-                                        {product.reviews.length > 1 && (
-                                            <button
-                                                onClick={() => {
-                                                    setReviewIndex((reviewIndex - 1 + product.reviews.length) % product.reviews.length);
-                                                }}
-                                                className="absolute top-1/2 left-0 transform -translate-y-1/2"
-                                                aria-label="Show previous review"
-                                            >
-                                                <ChevronLeftIcon className="w-6 h-6" />
-                                            </button>
-                                        )}
-                                        {product.reviews.length > 1 && (
-                                            <button
-                                                onClick={() => setReviewIndex((reviewIndex - 1 + product.reviews.length) % product.reviews.length)}
-                                                className="absolute top-1/2 right-0 transform -translate-y-1/2"
-                                                aria-label="Show next review"
-                                            >
-                                                <ChevronRightIcon className="w-6 h-6" />
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
+                    <button
+                        ref={addToCartButtonRef}
+                        disabled={isInCart}
+                        onClick={handleAddToCart}
+                        aria-label="Add product to cart"
+                        className="py-2 px-4 rounded-md transition duration-300 bg-cyan-700 text-white hover:bg-cyan-800"
+                    >
+                        {isInCart ? "In Cart" : "Add to Cart"}
+                    </button>
+                    <div className="flex flex-col gap-2 pt-10">
+                        <h2 className="text-xl font-bold text-[#1C1C1C]">Description</h2>
+                        <p className="text-[#1C1C1C] font-light text-base">{product.description}</p>
+                        <div className="flex flex-col gap-2">
+                            <div>
+                                <h3 className="text-lg font-semibold text-[#1C1C1C]">Dimensions</h3>
+                                <p className="text-[#1C1C1C] font-light">{product.dimensions.width + " x " + product.dimensions.height + " x " + product.dimensions.depth}</p>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-[#1C1C1C]">Weight</h3>
+                                <p className="text-[#1C1C1C] font-light">{product.weight} kg</p>
                             </div>
                         </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <button
-                            ref={addToCartButtonRef}
-                            disabled={isInCart}
-                            onClick={handleAddToCart}
-                            aria-label="Add product to cart"
-                            className="py-2 px-4 rounded-md transition duration-300 bg-cyan-700 text-white hover:bg-cyan-800"
-                        >
-                            {isInCart ? "In Cart" : "Add to Cart"}
-                        </button>
-                        <button aria-label="Add product to favorites" ref={addToFavoriteButtonRef} disabled={isFavorite} className="" onClick={handleAddToFavorite}>
-                            {!isFavorite && <OutlineStarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-gray-500 hover:text-yellow-500" />}
-                            {isFavorite && <StarIcon className="h-4 lg:h-6 w-4 lg:w-6 text-yellow-500" />}
-                        </button>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

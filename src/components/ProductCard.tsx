@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 
-import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
+import { HeartIcon } from "@heroicons/react/24/solid";
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
 
 import gsap from "gsap";
 
@@ -14,7 +15,6 @@ import { setSelectedProduct } from "../redux/slices/productsSlice";
 import Rating from "./shared/Rating";
 
 import { Product } from "../utils/types";
-import { StarIcon } from "@heroicons/react/24/solid";
 
 const ProductCard = ({ product }: { product: Product }) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -28,7 +28,8 @@ const ProductCard = ({ product }: { product: Product }) => {
     const addToCartButtonRef = useRef<HTMLButtonElement | null>(null);
     const addToFavoriteButtonRef = useRef<HTMLButtonElement | null>(null);
 
-    const handleAddToCart = () => {
+    const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         if (addToCartButtonRef.current) {
             gsap.to(addToCartButtonRef.current, {
                 scale: 1.5,
@@ -72,44 +73,35 @@ const ProductCard = ({ product }: { product: Product }) => {
             onClick={() => {
                 dispatch(setSelectedProduct(product));
             }}
-            className="flex flex-row gap-4 items-center bg-neutral-100 rounded-lg shadow-md px-4 xl:px-8 py-4 hover:shadow-lg w-full max-w-2xl"
+            className="flex flex-col gap-2 items-center bg-white rounded-lg shadow-md p-2 hover:shadow-lg max-w-[180px] md:max-w-64"
         >
-            {/* Product Image */}
-            <div className="w-16 h-16 xl:w-24 xl:h-24 flex-shrink-0 flex-grow-0 flex-auto rounded-full flex justify-center items-center bg-white">
+            <div className="w-3/4 flex-shrink-0 flex-grow-0 flex-auto flex justify-center items-center border-b border-[#EFF2F4]">
                 <img src={product.thumbnail} className="object-fill" alt={`thumbnail-${product.id}`} />
             </div>
 
-            <div className="xl:pl-6 flex flex-col gap-2 justify-around flex-grow">
-                {/* Title, Description, and Rating */}
-                <div className="flex flex-row justify-between">
-                    <h2 className="text-base xl:text-xl font-bold text-gray-800">{product.title}</h2>
-                    <div className="text-sm xl:text-lg font-semibold text-gray-800">
-                        ${product.price}
-                        <span className="text-xs xl:text-sm text-gray-600 line-through ml-2">${((product.price * (100 + product.discountPercentage)) / 100).toFixed(2)}</span>
-                    </div>
+            <div className="flex flex-col w-full px-1 py-3 gap-2 relative">
+                <div className="absolute top-2 right-2 rounded-md border border-[#DEE2E7] w-8 h-8 flex items-center justify-center">
+                    <button aria-label="Add product to favorites" ref={addToFavoriteButtonRef} disabled={isFavorite} onClick={handleAddToFavorite} className="">
+                        {!isFavorite && <OutlineHeartIcon className="h-4 xl:h-6 w-4 xl:w-6 text-[#0D6EFD] hover:text-blue-700" />}
+                        {isFavorite && <HeartIcon className="h-4 xl:h-6 w-4 xl:w-6 text-red-500" />}
+                    </button>
                 </div>
-                <p className="text-xs font-semibold text-gray-600 mt-1 text-left w-3/4 overflow-hidden overflow-ellipsis line-clamp-2">{product.description}</p>
-
-                {/* Ratings */}
-                <div className="flex justify-between items-center">
-                    <Rating rating={product.rating} />
-
-                    {/* Add to Cart Button and Favorite Button */}
-                    <div className="flex items-center gap-2">
-                        <button
-                            ref={addToCartButtonRef}
-                            disabled={isInCart}
-                            onClick={handleAddToCart}
-                            aria-label="Add product to cart"
-                            className="h-8 p-2 flex justify-center items-center rounded-lg transition duration-300 bg-cyan-700 text-white hover:bg-cyan-800 text-xs xl:text-sm font-semibold"
-                        >
-                            {<p className="inline-block">{isInCart ? "In Cart" : "Add to Cart"}</p>}
-                        </button>
-                        <button aria-label="Add product to favorites" ref={addToFavoriteButtonRef} disabled={isFavorite} onClick={handleAddToFavorite} className="">
-                            {!isFavorite && <OutlineStarIcon className="h-4 xl:h-6 w-4 xl:w-6 text-gray-500 hover:text-yellow-500" />}
-                            {isFavorite && <StarIcon className="h-4 xl:h-6 w-4 xl:w-6 text-yellow-500" />}
-                        </button>
-                    </div>
+                <h2 className="text-[13px] font-light text-[#606060] max-w-40 overflow-hidden text-ellipsis whitespace-nowrap">{product.title}</h2>
+                <div className="text-base font-semibold text-[#1C1C1C]">
+                    ${product.price}
+                    <span className="text-[#8B96A5] line-through ml-2">${((product.price * (100 + product.discountPercentage)) / 100).toFixed(2)}</span>
+                </div>
+                <div className="flex flex-row justify-between items-center pr-3">
+                    <Rating rating={product.rating} size="small" />
+                    <button
+                        ref={addToCartButtonRef}
+                        disabled={isInCart}
+                        onClick={handleAddToCart}
+                        aria-label="Add product to cart"
+                        className="flex justify-center items-center text-cyan-700 hover:text-cyan-800 text-xs font-semibold"
+                    >
+                        {isInCart ? "In Cart" : "Add to Cart"}
+                    </button>
                 </div>
             </div>
         </div>

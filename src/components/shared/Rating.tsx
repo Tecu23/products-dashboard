@@ -1,17 +1,25 @@
 import { StarIcon } from "@heroicons/react/24/solid";
 
-const Rating = ({ rating }: { rating: number }) => {
+const Rating = ({ rating, size }: { rating: number; size: string }) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
 
     return (
-        <div className="flex items-center text-yellow-500">
+        <div className="flex items-center text-[#FF9017]">
+            <span className={`${size == "small" ? "text-xs" : "text-lg leading-[10px]"} mr-2`}>{rating.toFixed(2)}</span>
             {[...Array(fullStars)].map((_, idx) => (
-                <StarIcon key={idx} className="h-4 xl:h-6 w-4 xl:w-6" aria-hidden="true" />
+                <StarIcon key={idx} className={`${size == "small" ? "h-3 w-3" : "h-6 w-6"}`} aria-hidden="true" />
             ))}
 
             {hasHalfStar && (
-                <svg key="half" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 xl:h-6 w-4 xl:w-6" aria-hidden="true">
+                <svg
+                    key="half"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className={`${size == "small" ? "h-4 w-4" : "h-6 w-6"}`}
+                    aria-hidden="true"
+                >
                     <defs>
                         <clipPath id="half">
                             <rect x="0" y="0" width="12" height="24" />
